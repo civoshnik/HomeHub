@@ -20,9 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Entity\Entity\Entity.csproj" />
-    <ProjectReference Include="..\Auth.Application\Auth.Application.csproj" />
-    <ProjectReference Include="..\Auth.Domain\Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\AnalyticsService\Analytics.Domain\Analytics.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\AuthService\Auth.Domain\Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\ExpensesService\Expenses.Domain\Expenses.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\NotificationsService\Notifications.Domain\Notifications.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\PaymentService\Payment.Domain\Payment.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\ShoppingService\Shopping.Domain\Shopping.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\TaskService\Task.Domain\Task.Domain.csproj" />
+    <ProjectReference Include="..\..\Services\UserService\User.Domain\User.Domain.csproj" />
   </ItemGroup>
 
 </Project>

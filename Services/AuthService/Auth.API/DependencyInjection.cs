@@ -1,5 +1,4 @@
-﻿using Auth.Application.Interfaces;
-using Auth.Infrastructure;
+﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API
@@ -8,9 +7,9 @@ namespace Auth.API
     {
         public static IServiceCollection AddAuthInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("AuthDb")));
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("Connection")));
 
-            services.AddScoped<IAuthUnitOfWork, AuthUnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
