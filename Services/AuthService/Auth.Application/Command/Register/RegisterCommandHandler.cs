@@ -9,9 +9,9 @@ namespace Auth.Application.Command.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Guid>
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterCommandHandler(UnitOfWork unitOfWork)
+        public RegisterCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }

@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using Auth.Application.Command.Register;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API
@@ -10,6 +11,8 @@ namespace Auth.API
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("Connection")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
 
             return services;
         }
