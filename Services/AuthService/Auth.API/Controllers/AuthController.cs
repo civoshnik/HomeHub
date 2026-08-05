@@ -1,5 +1,7 @@
-﻿using Auth.Application.Command.Register;
+﻿using Auth.Application.Command.Login;
+using Auth.Application.Command.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.API.Controllers;
@@ -21,12 +23,21 @@ public class AuthController : ControllerBase
         var userId = await _mediator.Send(command);
         return Ok(new { userId });
     }
-
-    //[HttpPost("login")]
-    //public async Task<IActionResult> Login(
-    //    [FromBody] LoginCommand command)
-    //{
-    //    var response = await _mediator.Send(command);
-    //    return Ok(response);
-    //}
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        return Ok(new
+        {
+            message = "Вы авторизованы",
+            userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+        });
+    }
 }
