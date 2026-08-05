@@ -30,6 +30,8 @@ namespace Infrastructure
         DbSet<ShoppingList> ShoppingLists { get; }
         DbSet<ShoppingItem> ShoppingItems { get; }
         DbSet<TaskItem> Tasks { get; }
+        DbSet<HouseholdBudget> HouseholdBudgets { get; }
+        DbSet<HouseholdBudgetCategory> HouseholdBudgetCategories { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

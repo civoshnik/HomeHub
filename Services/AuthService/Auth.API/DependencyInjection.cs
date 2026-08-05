@@ -2,6 +2,7 @@
 using Auth.Application.Interfaces;
 using Auth.Infrastructure.Security;
 using Infrastructure;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API

@@ -33,6 +33,8 @@ public class UnitOfWork : IUnitOfWork
     public DbSet<ShoppingList> ShoppingLists => _context.ShoppingLists;
     public DbSet<ShoppingItem> ShoppingItems => _context.ShoppingItems;
     public DbSet<TaskItem> Tasks => _context.Tasks;
+    public DbSet<HouseholdBudget> HouseholdBudgets => _context.HouseholdBudgets;
+    public DbSet<HouseholdBudgetCategory> HouseholdBudgetCategories => _context.HouseholdBudgetCategories;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         => _context.SaveChangesAsync(cancellationToken);
