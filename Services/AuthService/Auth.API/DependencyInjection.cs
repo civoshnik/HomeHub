@@ -18,6 +18,9 @@ namespace Auth.API
 
             services.AddScoped<IJwtService, JwtService>();
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+
             return services;
         }
     }
