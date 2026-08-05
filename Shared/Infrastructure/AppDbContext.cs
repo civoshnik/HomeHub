@@ -31,6 +31,8 @@ namespace Infrastructure
         public DbSet<ShoppingList> ShoppingLists { get; set; }
         public DbSet<ShoppingItem> ShoppingItems { get; set; }
         public DbSet<TaskItem> Tasks { get; set; }
+        public DbSet<HouseholdBudget> HouseholdBudgets { get; set; }
+        public DbSet<HouseholdBudgetCategory> HouseholdBudgetCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -186,6 +188,46 @@ namespace Infrastructure
                 entity.Property(x => x.Description).HasMaxLength(1000);
 
                 entity.HasIndex(x => x.AssignedUserId);
+            });
+
+            builder.Entity<HouseholdBudget>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.Balance)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                entity.Property(x => x.Rent)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                entity.Property(x => x.Utilities)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                entity.HasIndex(x => new { x.HouseholdId, x.Year, x.Month })
+                    .IsUnique();
+            });
+
+            builder.Entity<HouseholdBudgetCategory>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.Name)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(x => x.Amount)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                entity.HasIndex(x => x.HouseholdBudgetId);
+
+                entity.HasOne<HouseholdBudget>()
+                    .WithMany()
+                    .HasForeignKey(x => x.HouseholdBudgetId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

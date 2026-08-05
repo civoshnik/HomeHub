@@ -1,4 +1,6 @@
 ﻿using Auth.Application.Command.Register;
+using Auth.Application.Interfaces;
+using Auth.Infrastructure.Security;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,8 @@ namespace Auth.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
+
+            services.AddScoped<IJwtService, JwtService>();
 
             return services;
         }
