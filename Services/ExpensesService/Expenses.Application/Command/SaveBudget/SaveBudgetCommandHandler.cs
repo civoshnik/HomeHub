@@ -22,7 +22,7 @@ public class SaveBudgetCommandHandler : IRequestHandler<SaveBudgetCommand>
     {
         var userId = _currentUser.UserId;
 
-        var profile = await _unitOfWork.UserProfiles.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken)
+        var profile = await _unitOfWork.UserProfiles.FirstOrDefaultAsync(x => x.UserId == userId)
             ?? throw new Exception("Профиль пользователя не найден");
 
         var householdId = profile.HouseholdId;

@@ -2,9 +2,8 @@
 {
     public class HouseholdMember
     {
-        public Guid HouseholdId { get; private set; }
-        public Guid UserId { get; private set; }
-
-        public string Role { get; private set; }
+        public Guid HouseholdId { get; set; }
+        public Guid UserId { get; set; }
+        public string Role { get; set; }
     }
 }
