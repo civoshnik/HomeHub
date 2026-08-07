@@ -106,3 +106,4 @@ artifacts/
 # Mac / Linux trash
 ############################################
 .Trashes
+secrets.json

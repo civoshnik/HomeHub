@@ -1,4 +1,5 @@
-﻿using Expenses.Application.Query.GetBudget;
+﻿using Expenses.Application.Command.Ai;
+using Expenses.Application.Query.GetBudget;
 using Expenses.Application.Query.GetBudgetHistory;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,13 @@ namespace Expenses.API.Controllers
         {
             var result = await _mediator.Send(new GetBudgetHistoryQuery(year));
             return Ok(result);
+        }
+
+        [HttpPost("ai-analysis")]
+        public async Task<IActionResult> AnalyzeBudget([FromBody] AnalyzeBudgetCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(new { analysis = result });
         }
     }
 }

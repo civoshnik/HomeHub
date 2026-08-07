@@ -1,4 +1,5 @@
-﻿using Infrastructure;
+﻿using Expenses.Application.Interfaces;
+using Infrastructure;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace Expenses.API
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddHttpClient<IAiService, AiService>();
 
             return services;
         }
