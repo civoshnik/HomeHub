@@ -22,12 +22,15 @@ public class SaveBudgetCommandHandler : IRequestHandler<SaveBudgetCommand>
     {
         var userId = _currentUser.UserId;
 
-        var profile = await _unitOfWork.UserProfiles.FirstOrDefaultAsync(x => x.UserId == userId)
+        var profile = await _unitOfWork.UserProfiles .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken)
             ?? throw new Exception("Профиль пользователя не найден");
 
         var householdId = profile.HouseholdId;
 
-        var existing = await _unitOfWork.HouseholdBudgets.FirstOrDefaultAsync(x =>
+        using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+        var existing = await _unitOfWork.HouseholdBudgets
+            .FirstOrDefaultAsync(x =>
                 x.HouseholdId == householdId &&
                 x.Year == request.Year &&
                 x.Month == request.Month,
@@ -56,13 +59,13 @@ public class SaveBudgetCommandHandler : IRequestHandler<SaveBudgetCommand>
             existing.Utilities = request.Utilities;
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var oldCategories = _unitOfWork.HouseholdBudgetCategories
+                .Where(x => x.HouseholdBudgetId == existing.Id);
+
+            _unitOfWork.HouseholdBudgetCategories.RemoveRange(oldCategories);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
-
-        var oldCategories = _unitOfWork.HouseholdBudgetCategories
-            .Where(x => x.HouseholdBudgetId == existing.Id);
-
-        _unitOfWork.HouseholdBudgetCategories.RemoveRange(oldCategories);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         foreach (var category in request.ExtraCategories)
         {
@@ -78,5 +81,7 @@ public class SaveBudgetCommandHandler : IRequestHandler<SaveBudgetCommand>
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await transaction.CommitAsync(cancellationToken);
     }
 }
