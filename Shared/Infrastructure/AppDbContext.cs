@@ -57,6 +57,14 @@ namespace Infrastructure
                     .IsRequired();
             });
 
+            builder.Entity<UserProfile>(entity =>
+            {
+                entity.HasOne<UserCredential>()
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             builder.Entity<RefreshToken>(entity =>
             {
                 entity.HasKey(x => x.Id);

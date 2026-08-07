@@ -4,6 +4,7 @@ namespace User.Domain.Models
 {
     public class UserProfile : BaseEntity
     {
+        public Guid UserId { get; set; }
         public string FirsName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
