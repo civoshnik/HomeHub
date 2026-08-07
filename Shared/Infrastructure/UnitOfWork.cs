@@ -2,6 +2,7 @@
 using Auth.Domain.Models;
 using Expenses.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Notifications.Domain.Models;
 using Payment.Domain.Models;
 using Shopping.Domain.Models;
@@ -38,4 +39,8 @@ public class UnitOfWork : IUnitOfWork
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         => _context.SaveChangesAsync(cancellationToken);
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+        => await _context.Database.BeginTransactionAsync(cancellationToken);
+    
 }

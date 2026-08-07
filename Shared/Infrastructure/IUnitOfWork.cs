@@ -1,12 +1,13 @@
 ﻿using Analytics.Domain.Models;
 using Auth.Domain.Models;
 using Expenses.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Notifications.Domain.Models;
 using Payment.Domain.Models;
 using Shopping.Domain.Models;
 using Task.Domain.Models;
 using User.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -34,5 +35,7 @@ namespace Infrastructure
         DbSet<HouseholdBudgetCategory> HouseholdBudgetCategories { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+        Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
     }
 }
