@@ -1,4 +1,5 @@
 ﻿using Expenses.Application.Query.GetBudget;
+using Expenses.Application.Query.GetBudgetHistory;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,13 @@ namespace Expenses.API.Controllers
         public async Task<IActionResult> GetBudget([FromQuery] int year,[FromQuery] int month)
         {
             var result = await _mediator.Send(new GetBudgetQuery(year, month));
+            return Ok(result);
+        }
+
+        [HttpGet("budget/history")]
+        public async Task<IActionResult> GetBudgetHistory(int year)
+        {
+            var result = await _mediator.Send(new GetBudgetHistoryQuery(year));
             return Ok(result);
         }
     }
