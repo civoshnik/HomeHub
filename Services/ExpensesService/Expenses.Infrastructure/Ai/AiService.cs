@@ -17,30 +17,33 @@ public class AiService : IAiService
 
     public async Task<string> GenerateAsync(string prompt)
     {
-        _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configuration["OpenAI:ApiKey"]);
+        var apiKey = _configuration["DeepSeek:ApiKey"];
 
-        var response = await _http.PostAsJsonAsync("https://api.openai.com/v1/chat/completions",
+        if (string.IsNullOrWhiteSpace(apiKey))
+            throw new Exception("DeepSeek API key not configured");
+
+        _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+        var response = await _http.PostAsJsonAsync("https://api.deepseek.com/chat/completions",
             new
             {
-                model = "gpt-4o-mini",
+                model = "deepseek-v4-flash",
                 messages = new[]
                 {
-                new { role = "system", content = "Ты финансовый аналитик." },
-                new { role = "user", content = prompt }
+                    new { role = "system", content = "Ты финансовый аналитик." },
+                    new { role = "user", content = prompt }
                 }
             });
 
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
-            throw new Exception($"OpenAI error: {content}");
+            throw new Exception($"DeepSeek error: {content}");
 
         var json = JsonDocument.Parse(content).RootElement;
 
-        if (!json.TryGetProperty("choices", out var choices))
-            throw new Exception($"Invalid OpenAI response: {content}");
-
-        return choices[0]
+        return json
+            .GetProperty("choices")[0]
             .GetProperty("message")
             .GetProperty("content")
             .GetString()!;
